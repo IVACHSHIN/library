@@ -1,47 +1,59 @@
 package com.example.library;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BookService {
 
+    @Autowired
+    public BookRepository bookRepository;
+
     public Book get(Long id) {
-        //TODO get book by id from the DB
-        Book testBook = new Book();
-        testBook.setName("Война и мир");
-        testBook.setAuthor("Лев Толстой");
-        testBook.setYear(2020);
-        return testBook;
+        Optional<Book> optional = bookRepository.findById(id);
+
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+
+        throw new RuntimeException("Book not found");
+
     }
 
     public List<Book> getAll() {
-        //TODO get all the books from the DB
-        Book testBook = new Book();
-        testBook.setName("Война и мир");
-        testBook.setAuthor("Лев Толстой");
-        testBook.setYear(2020);
+        Iterator<Book> iterator = bookRepository.findAll().iterator();
 
-        Book testBook2 = new Book();
-        testBook2.setName("Война и мир 222");
-        testBook2.setAuthor("Лев Толстой 777");
-        testBook2.setYear(2021);
-        return List.of(testBook, testBook2);
+        List<Book> books = new ArrayList<>();
+
+        while (iterator.hasNext()) {
+            books.add(iterator.next());
+        }
+        return books;
+
     }
 
     public Book create(Book book) {
-        //TODO save the book to the DB
-        return book;
+        Book saved = bookRepository.save(book);
+        return saved;
     }
 
     public Book update(Long id, Book book) {
-        //TODO get book by id and update it
-        return book;
+        Book original = get(id);
+        original.setName(book.getName());
+        original.setAuthor(book.getAuthor());
+        original.setDescription(book.getDescription());
+        original.setPublisher(book.getPublisher());
+        original.setIsbn(book.getIsbn());
+        original.setYear(book.getYear());
+
+        Book updated = bookRepository.save(original);
+        return updated;
     }
 
     public void delete(Long id) {
-        //TODO delete book by id
+        Book book = get(id);
+        bookRepository.delete(book);
     }
 }
