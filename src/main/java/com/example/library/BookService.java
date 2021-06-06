@@ -1,6 +1,8 @@
 package com.example.library;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,16 +24,13 @@ public class BookService {
 
     }
 
-    public List<Book> getAll() {
-        Iterator<Book> iterator = bookRepository.findAll().iterator();
+    public Page<Book> getAll(String query, Pageable pageable) {
+        if (query != null) {
+            return bookRepository.findByQuery("%" + query.toLowerCase() + "%", pageable);
 
-        List<Book> books = new ArrayList<>();
-
-        while (iterator.hasNext()) {
-            books.add(iterator.next());
         }
-        return books;
-
+        Page<Book> page = bookRepository.findAll(pageable);
+        return page;
     }
 
     public Book create(Book book) {
