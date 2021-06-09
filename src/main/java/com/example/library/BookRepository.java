@@ -7,7 +7,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
     @Query("select book from Book book where lower(book.name) like :query " +
-    "or lower(book.author) like :query " +
-    "or lower(book.isbn) like :query")
+            "or lower(book.author) like :query " +
+            "or lower(book.description) like :query " +
+            "or lower(book.isbn) like :query")
     Page<Book> findByQuery(String query, Pageable pageable);
 }

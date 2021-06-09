@@ -1,6 +1,5 @@
 package com.example.library;
 
-import com.github.dockerjava.api.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

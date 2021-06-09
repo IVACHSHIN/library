@@ -1,6 +1,5 @@
 package com.example.library;
 
-import com.github.dockerjava.api.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
